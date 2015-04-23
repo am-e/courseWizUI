@@ -1,0 +1,17 @@
+<div class="container">
+  <modal title="Loginform" ng-show="!currentUser" visible="showModal" ng-controller="LoginController" ng-submit="login(credentials)" novalidate>
+      <form role="form" class="LoginForm">
+	<div class="form-group">
+	  <label for="Username">Username</label>
+	  <input type="username" ng-model="credentials.username" class="form-control" id="email" placeholder="Enter email" />
+	</div>
+	<div class="form-group">
+	  <label for="password">Password</label>
+	  <input type="password" ng-model="credentials.password" class="form-control" id="password" placeholder="Password" />
+	</div>
+	<button type="submit" class="btn btn-default">Login</button>
+      </form>
+    </modal>
+    <div ng-show="currentUser" ui-calendar="uiConfig.calendar" ng-model="eventSources"></div>
+  </div>
+</div>
