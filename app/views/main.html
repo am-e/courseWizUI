@@ -1,5 +1,5 @@
 <div class="container">
-  <modal title="Loginform" ng-show="!currentUser" visible="showModal" ng-controller="LoginController" ng-submit="login(credentials)" novalidate>
+  <modal title="Loginform" class="login" ng-show="!currentUser" visible="showModal" ng-controller="LoginController" ng-submit="login(credentials)" novalidate>
       <form role="form" class="LoginForm">
 	<div class="form-group">
 	  <label for="Username">Username</label>
@@ -12,6 +12,18 @@
 	<button type="submit" class="btn btn-default">Login</button>
       </form>
     </modal>
-    <div ng-show="currentUser" ui-calendar="uiConfig.calendar" ng-model="eventSources"></div>
+    <div id="calendar-container" ng-show="currentUser" >
+      <form role="form" class="ControlsForm" ng-submit="addRemoveEventSource(eventSources,classes)">
+	<div class="form-group">
+	  <fieldset>
+	  <label for="major">Select your major</label>
+	  <select name="major" id="major" class="major" ng-model="major">
+	    <option>Computer Science</option>
+	  </select>
+	  <input type="submit" id="run" value="Run"/>
+	</fieldset>
+      </form>
+      <div ui-calendar="uiConfig.calendar" ng-model="eventSources" calendar="myCalendar" class="calendar"></div>
+    </div>
   </div>
 </div>
