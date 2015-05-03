@@ -16,21 +16,14 @@ angular.module('courseWizUiApp')
     ];
     
     // Login vars
-    $scope.currentUser = null;
+    //$scope.currentUser = null;
     //$rootScope.currentUser = null;
-    $scope.isLoginPage = false;
+    //$scope.isLoginPage = false;
     
     // Events vars
     $scope.eventSources = [];
     $scope.events = [];
     $scope.classes = [];
-    
-    
-    // Current user setter
-    $scope.setCurrentUser = function (user) {
-      $scope.currentUser = user;
-      
-    };
     
     /*
     // Current user setter
@@ -45,7 +38,8 @@ angular.module('courseWizUiApp')
       
       // Get events from json (then back-end)
       //$http.get('classes.json').success(function(data) {
-      $http.post('http://localhost:3000/getclasses', {username:$scope.currentUser.username, major:$scope.major}).success(function(data) {
+      //$http.post('http://localhost:3000/getclasses', {username:$scope.currentUser.username, major:$scope.major}).success(function(data) {
+      $http.get('http://127.0.0.1:8000/api/courses').success(function(data) {
 	for(var i = 0; i < data.length; i++)
 	  {
 	    
@@ -75,97 +69,6 @@ angular.module('courseWizUiApp')
       
     };
     
-    /*
-    // add custom event
-    $scope.addEvent = function() {
-      $scope.events.push({
-        title: 'Open Sesame',
-        start: new Date(y, m, 28),
-        end: new Date(y, m, 29),
-        className: ['openSesame']
-      });
-    };
-    
-    
-    // remove event
-    $scope.remove = function(index) {
-      $scope.events.splice(index,1);
-    };
-    */
-    
-    /*
-    // Handle request schedule
-    $scope.requestSchedule = function() {
-      
-      
-      var events = [
-	    {
-		title  : 'event1',
-		start  : '2015-04-22',
-		end    : '2015-04-22'
-	    },
-	    {
-		title  : 'event2',
-		start  : '2015-04-23',
-		end    : '2015-04-23'
-	    },
-	    {
-		title  : 'event3',
-		start  : '2015-04-24',
-		end    : '2015-04-24'
-	    }
-	];
-	
-	for(var i = 0; i < events.length; ++i) {
-	  $scope.events.push(events[i]);
-	}
-	
-	
-	$scope.eventSources = [$scope.events];
-	
-	//$scope.myCalendar.fullCalendar('refetchEvents');
-	//$scope.myCalendar.fullCalendar('render');
-	
-	//console.log($scope.myCalendar[0]);
-	
-    };
-    */
-    
-    /*
-    // Get events from json (then back-end)
-    $http.get('classes.json').success(function(data) {
-      for(var i = 0; i < data.length; i++)
-	{
-	  
-	  $scope.classes[i] = {title: data[i].title, start: data[i].start, end: data[i].end};
-	  
-	}
-      
-      
-    });
-    */
-    
-     
-    /*
-    // Sample events
-    $scope.events = [
-	    {
-		title  : 'event1',
-		start  : '2015-04-22',
-		end    : '2015-04-22'
-	    },
-	    {
-		title  : 'event2',
-		start  : '2015-04-23',
-		end    : '2015-04-23'
-	    },
-	    {
-		title  : 'event3',
-		start  : '2015-04-24',
-		start  : '2015-04-24'
-	    }
-	];
-    */
     
     // Calendar config object 
     $scope.uiConfig = {

@@ -86,6 +86,13 @@ body {
   margin:1%;  
 }
 
-.calendar {
-  margin: 5%;
+.container-fluid {
+
+  margin-left:8%;
+}
+
+.LoginForm {
+  margin-left:30%;
+  width: 300px;
+  
 }

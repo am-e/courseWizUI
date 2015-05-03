@@ -1,5 +1,5 @@
 <!doctype html>
-<html class="no-js">
+<html class="no-js" ng-app="courseWizUiApp">
   <head>
     <meta charset="utf-8">
     <title></title>
@@ -14,9 +14,10 @@
     <!-- endbuild -->
     <!-- build:css(.tmp) styles/main.css -->
     <link rel="stylesheet" href="styles/main.css">
+    <link rel="stylesheet" href="styles/schedule.css">
     <!-- endbuild -->
   </head>
-  <body ng-app="courseWizUiApp">
+  <body ng-controller="ApplicationController">
     <!--[if lt IE 7]>
       <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
     <![endif]-->
@@ -41,6 +42,7 @@
 
             <ul class="nav navbar-nav">
               <li class="active"><a href="#/">Home</a></li>
+              <li><a ng-href="#/schedule">Schedule</a></li>
               <li><a ng-href="#/about">About</a></li>
               <!--<li><a ng-href="#/">Contact</a></li>-->
             </ul>
@@ -49,7 +51,7 @@
       </div>
     </div>
 
-    <div class="container">
+    <div class="container-fluid">
     <div ng-view=""></div>
     </div>
 
@@ -93,6 +95,7 @@
         <script src="scripts/app.js"></script>
         <script src="scripts/controllers/main.js"></script>
         <script src="scripts/controllers/about.js"></script>
+        <script src="scripts/controllers/schedule.js"></script>
         <!-- endbuild -->
 </body>
 </html>
