@@ -8,112 +8,58 @@
  * Controller of the courseWizUiApp
  */
 angular.module('courseWizUiApp')
-  .controller('MainCtrl', function ($scope, $rootScope, $http) {
+  .controller('MainCtrl', function ($scope) {
     $scope.awesomeThings = [
       'HTML5 Boilerplate',
       'AngularJS',
       'Karma'
     ];
     
-    // Login vars
-    //$scope.currentUser = null;
-    //$rootScope.currentUser = null;
-    //$scope.isLoginPage = false;
-    
-    // Events vars
-    $scope.eventSources = [];
-    $scope.events = [];
-    $scope.classes = [];
-    
-    /*
-    // Current user setter
-    $rootScope.setCurrentUser = function (user) {
-      $rootScope.currentUser = user;
-      
-    };
-    */
-    
-    /* add and removes an event source of choice */
-    $scope.addRemoveEventSource = function(sources,source) {
-      
-      // Get events from json (then back-end)
-      //$http.get('classes.json').success(function(data) {
-      //$http.post('http://localhost:3000/getclasses', {username:$scope.currentUser.username, major:$scope.major}).success(function(data) {
-      $http.get('http://127.0.0.1:8000/api/courses').success(function(data) {
-	for(var i = 0; i < data.length; i++)
-	  {
-	    
-	    $scope.classes[i] = {title: data[i].title, start: data[i].start, end: data[i].end};
-	    
-	  }
-	
-	var canAdd = 0;
-	angular.forEach(sources,function(value, key){
-	  if(sources[key] === source){
-	    sources.splice(key,1);
-	    canAdd = 1;
-	  }
-	});
-	
-	if(canAdd === 0){
-	  sources.push(source);
-	}
-	
-	var date = new Date(2014,7,25,0,0,0);
-	
-	//console.log(uiCalendarConfig['myCalendar']);
-	$scope.myCalendar.fullCalendar('gotoDate',date);
-	$scope.myCalendar.fullCalendar('defaultView','agendaDay');
-	
-      });
-      
-    };
-    
-    
-    // Calendar config object 
-    $scope.uiConfig = {
-      calendar:{
-	defaultView: 'agendaWeek',
-	height: 675,
-	minTime: '08:00:00',
-	editable: false,
-	header:{
-	  //left: 'month basicWeek basicDay agendaWeek agendaDay',
-	  //center: 'title'
-	  //right: 'today prev,next'
-	}
-      }
-    };
-    
-    // Set events source
-    //$scope.eventSources = [$scope.events];
     
     
   })
+    
   
   // Login Controller
-  .controller('LoginController', function ($scope, $rootScope, AUTH_EVENTS, AuthService) {
+  .controller('LoginController', function ($scope, $rootScope, AUTH_EVENTS, AuthService, $resource) {
+    
+    //Student info
+    $scope.studentRin = null;
+    $scope.studentName = null;
+    $scope.studentMajor = null;
+    $scope.sessionId = null;
     
     $scope.credentials = {
       username: '',
       password: ''
     };
     
+    
+    //Login
     $scope.login = function (credentials) {
       
       AuthService.login(credentials).then(function (user) {
 	
 	$rootScope.$broadcast(AUTH_EVENTS.loginSuccess);
 	$scope.setCurrentUser(user);
-	//$rootScope.setCurrentUser(user);
-	//console.log($scope.currentUser.id);
 	
+	var Student = $resource('http://127.0.0.1:8000/api/student');
+	
+	var student = Student.get(function() {
+	  
+	  $scope.studentRin = student.rin;
+	  $scope.studentMajor = student.degree;
+	  $scope.studentName = student.name;
+	  
+	});
+      
       }, function () {
 	
 	$rootScope.$broadcast(AUTH_EVENTS.loginFailed);
 	
       });
     };
+    
   })
   
   // Authentication Service
@@ -122,42 +68,42 @@ angular.module('courseWizUiApp')
   
     authService.login = function (credentials) {
       
-      return $http
-	.post('http://localhost:3000/login', credentials)
-	.then(function (res) {
-	  //console.log(res.data.id+' '+res.data.user.username);
-	  Session.create(res.data.id, res.data.user.username);
-	  return res.data.user;
+      /*
+      return $resource('http://127.0.0.1:8000/api/login/', {username: credentials.username, password: credentials.password}, {doLogin: {method: 'POST'}})
+	.doLogin()
+	.then(function() {
+	  Session.create(credentials.username);
+	  return credentials.username;
 	});
-    
+      */
+      
+      
+      return $http
+	.post('http://127.0.0.1:8000/api/login/', credentials)
+	.then(function (res) {
+	  console.log(res);
+	  Session.create(credentials.username);
+	  return credentials.username;
+	});
+      
     };
   
     authService.isAuthenticated = function () {
       return !!Session.userId;
     };
-  
-/*
-    authService.isAuthorized = function (authorizedRoles) {
-      if (!angular.isArray(authorizedRoles)) {
-	authorizedRoles = [authorizedRoles];
-      }
-      return (authService.isAuthenticated() &&
-	authorizedRoles.indexOf(Session.userRole) !== -1);
-    };
-*/ 
+
     return authService;
   })
-
 
   // Session tracker
   .service('Session', function () {
     this.create = function (sessionId, userId) {
-      this.id = sessionId;
+      //this.id = sessionId;
       this.userId = userId;
       //this.userRole = userRole;
     };
     this.destroy = function () {
-      this.id = null;
+      //this.id = null;
       this.userId = null;
       //this.userRole = null;
     };

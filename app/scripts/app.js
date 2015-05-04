@@ -19,7 +19,7 @@ angular
     'ui.calendar',
     'ngResource'
   ])
-  .config(function ($routeProvider) {
+  .config(function ($routeProvider,$resourceProvider,$httpProvider) {
     $routeProvider
       .when('/', {
         templateUrl: 'views/main.html',
@@ -36,9 +36,19 @@ angular
       .otherwise({
         redirectTo: '/'
       });
+      $httpProvider.defaults.withCredentials = true;
+      $resourceProvider.defaults.stripTrailingSlashes = false;
   })
   
-  .controller('ApplicationController', function ($scope,AuthService) {
+  /*
+  .config(['$resourceProvider', function($resourceProvider) {
+    // Don't strip trailing slashes from calculated URLs
+    $resourceProvider.defaults.stripTrailingSlashes = false;
+    
+  }])
+  */
+    
+  .controller('ApplicationController', function ($scope) {
     
     $scope.setCurrentUser = function (user) {
       $scope.currentUser = user;
@@ -48,7 +58,7 @@ angular
     $scope.currentUser = null;
     //$rootScope.currentUser = null;
     $scope.isLoginPage = false;
-    $scope.isAuthorized = AuthService.isAuthorized;
+    //$scope.isAuthorized = AuthService.isAuthorized;
   
     
     // Current user setter
@@ -56,8 +66,9 @@ angular
       $scope.currentUser = user;
     };
   
-  })
+  });
   
+  /*
   .run(function ($rootScope, AUTH_EVENTS, AuthService) {
     $rootScope.$on('$stateChangeStart', function (event, next) {
       var authorizedRoles = next.data.authorizedRoles;
@@ -72,4 +83,6 @@ angular
 	}
       }
     });
+
   });
+  */

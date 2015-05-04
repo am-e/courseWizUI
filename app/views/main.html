@@ -1,5 +1,5 @@
-<div class="container-fluid">
-  <modal title="Loginform" class="login" ng-show="!currentUser" visible="showModal" ng-controller="LoginController" ng-submit="login(credentials)" novalidate>
+<div class="container-fluid" ng-controller="LoginController">
+  <modal title="Loginform" class="login" ng-show="!currentUser" visible="showModal" ng-submit="login(credentials)" novalidate>
       <form role="form" class="LoginForm">
 	<div class="form-group">
 	  <label for="Username">Username</label>
@@ -13,7 +13,9 @@
       </form>
     </modal>
     <div ng-show="currentUser">
-      <p>Transcript</p>
-      <li><a ng-href="#/schedule">Schedule</a></li>
+      <p>Name: 	{{studentName}}</p>
+      <p>Rin: 	{{studentRin}}</p>
+      <p>Major: {{studentMajor}}</p>
+      <a ng-href="#/schedule">Schedule</a>
     </div>
 </div>
