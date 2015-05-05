@@ -60,10 +60,39 @@ angular
     $scope.isLoginPage = false;
     //$scope.isAuthorized = AuthService.isAuthorized;
   
+    //Student info
+    $scope.studentRin = null;
+    $scope.studentName = null;
+    $scope.studentMajor = null;
+    $scope.studentCourses = null;
+    $scope.sessionId = null;
+    
+    // Studet info setters
+    $scope.setStudentRin = function (rin) {
+      $scope.studentRin = rin;
+    };
+    
+    $scope.setStudentName = function (name) {
+      $scope.studentName = name;
+    };
+    
+    $scope.setStudentMajor = function (major) {
+      $scope.studentMajor = major;
+    };
+    
+    $scope.setStudentCourses = function (courses) {
+      $scope.studentCourses = courses;
+    };
     
     // Current user setter
     $scope.setCurrentUser = function (user) {
       $scope.currentUser = user;
+    };
+    
+    //logout
+    $scope.logout = function() {
+    
+      $scope.setCurrentUser(null);
     };
   
   });

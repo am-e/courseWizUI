@@ -8,7 +8,7 @@
  * Controller of the courseWizUiApp
  */
 angular.module('courseWizUiApp')
-  .controller('ScheduleCtrl', function ($scope, $resource) {
+  .controller('ScheduleCtrl', function ($scope, $resource, $window) {
     $scope.awesomeThings = [
       'HTML5 Boilerplate',
       'AngularJS',
@@ -20,119 +20,123 @@ angular.module('courseWizUiApp')
     $scope.events = [];
     $scope.classes = [];
     
+    // changes semester
+    $scope.goToSemester = function(semester) {
     
-    /* add and removes an event source of choice */
-    $scope.addRemoveEventSource = function(sources,source) {
+      $scope.updateEvents($scope.eventSources,$scope.classes,semester);
       
-      /*
-      // Get events from json (then back-end)
-      $http.get('http://127.0.0.1:8000/api/courses').success(function(schedule) {
-	for(var i = 0; i < schedule.length; i++)
-	  {
-	    
-	    switch(schedule[i].day) {
-	    
-	      case 'M': {
-		$scope.classes[i] = {title: schedule[i].title, start: '2014-08-25T'+schedule[i].start, end: '2014-08-25T'+schedule[i].end};
-		break;
-	      }
-	      case 'T': {
-		$scope.classes[i] = {title: schedule[i].title, start: '2014-08-26T'+schedule[i].start, end: '2014-08-26T'+schedule[i].end};
-		break;
-	      }
-	      case 'W': {
-		$scope.classes[i] = {title: schedule[i].title, start: '2014-08-27T'+schedule[i].start, end: '2014-08-27T'+schedule[i].end};
-		break;
-	      }
-	      case 'R': {
-		$scope.classes[i] = {title: schedule[i].title, start: '2014-08-28T'+schedule[i].start, end: '2014-08-28T'+schedule[i].end};
-		break;
-	      }
-	      case 'F': {
-		$scope.classes[i] = {title: schedule[i].title, start: '2014-08-29T'+schedule[i].start, end: '2014-08-29T'+schedule[i].end};
-		break;
+      var date = null;
+      if (semester === 'Fall 2014') {
+	date = new Date(2014,7,25,0,0,0);
+	$scope.myCalendar.fullCalendar('gotoDate',date);
+	//$scope.updateEvents($scope.eventSources,$scope.classes);
+      }
+      else if (semester === 'Spring 2015') {
+	date = new Date(2015,0,26,0,0,0);
+	$scope.myCalendar.fullCalendar('gotoDate',date);
+	//$scope.updateEvents($scope.eventSources,$scope.classes);
+      }
+      
+    };
+    
+    // replaces events in the calendar
+    $scope.updateEvents = function(sources,source,semester) {
+      
+      if (semester) {
+	
+	// get classes from back-end
+	var Schedule = $resource('http://127.0.0.1:8000/api/courses',{'query':  {method:'GET', isArray:true}});
+	
+	var schedule = Schedule.query(function() {
+	  
+
+	  for(var i = 0; i < schedule.length; i++)
+	    {
+	      switch(schedule[i].day) {
+	      
+		case 'M': {
+		  if (schedule[i].semester === 'FA14') {
+		    $scope.classes[i] = {title: schedule[i].title, start: '2014-08-25T'+schedule[i].start, end: '2014-08-25T'+schedule[i].end};
+		  }
+		  else if(schedule[i].semester === 'SP15') {
+		    $scope.classes[i] = {title: schedule[i].title, start: '2015-01-26T'+schedule[i].start, end: '2015-01-26T'+schedule[i].end};
+		  }
+		  break;
+		}
+		case 'T': {
+		  if (schedule[i].semester === 'FA14') {
+		    $scope.classes[i] = {title: schedule[i].title, start: '2014-08-26T'+schedule[i].start, end: '2014-08-26T'+schedule[i].end};
+		  }
+		  else if(schedule[i].semester === 'SP15') {
+		    $scope.classes[i] = {title: schedule[i].title, start: '2015-01-27T'+schedule[i].start, end: '2015-01-27T'+schedule[i].end};
+		  }
+		  break;
+		}
+		case 'W': {
+		  if (schedule[i].semester === 'FA14') {
+		    $scope.classes[i] = {title: schedule[i].title, start: '2014-08-27T'+schedule[i].start, end: '2014-08-27T'+schedule[i].end};
+		  }
+		  else if(schedule[i].semester === 'SP15') {
+		    $scope.classes[i] = {title: schedule[i].title, start: '2015-01-28T'+schedule[i].start, end: '2015-01-28T'+schedule[i].end};
+		  }
+		  break;
+		}
+		case 'R': {
+		  if (schedule[i].semester === 'FA14') {
+		    $scope.classes[i] = {title: schedule[i].title, start: '2014-08-28T'+schedule[i].start, end: '2014-08-28T'+schedule[i].end};
+		  }
+		  else if(schedule[i].semester === 'SP15') {
+		    $scope.classes[i] = {title: schedule[i].title, start: '2015-01-29T'+schedule[i].start, end: '2015-01-29T'+schedule[i].end};
+		  }
+		  break;
+		}
+		case 'F': {
+		  if (schedule[i].semester === 'FA14') {
+		    $scope.classes[i] = {title: schedule[i].title, start: '2014-08-29T'+schedule[i].start, end: '2014-08-29T'+schedule[i].end};
+		  }
+		  else if(schedule[i].semester === 'SP15') {
+		    $scope.classes[i] = {title: schedule[i].title, start: '2015-01-30T'+schedule[i].start, end: '2015-01-30T'+schedule[i].end};
+		  }
+		  break;
+		}
 	      }
 	    }
+	    
+	  
+	  var canAdd = 0;
+	  angular.forEach(sources,function(value, key){
+	    if(sources[key] === source){
+	      sources.splice(key,1);
+	      canAdd = 1;
+	    }
+	  });
+	  
+	  if(canAdd === 0){
+	    sources.push(source);
 	  }
 	  
 
-	
-	var canAdd = 0;
-	angular.forEach(sources,function(value, key){
-	  if(sources[key] === source){
-	    sources.splice(key,1);
-	    canAdd = 1;
+	  var date = null;
+	  if (semester === 'Fall 2014') {
+	    date = new Date(2014,7,25,0,0,0);
+	    $scope.myCalendar.fullCalendar('gotoDate',date);
+	    //$scope.updateEvents($scope.eventSources,$scope.classes);
 	  }
-	});
-	
-	if(canAdd === 0){
-	  sources.push(source);
-	}
-	
-	var date = new Date(2014,7,25,0,0,0);
-	
-	//console.log(uiCalendarConfig['myCalendar']);
-	$scope.myCalendar.fullCalendar('gotoDate',date);
-	$scope.myCalendar.fullCalendar('defaultView','agendaDay');
-	
-      });
-  
-      */
-      
-      var Schedule = $resource('http://127.0.0.1:8000/api/courses',{'query':  {method:'GET', isArray:true}});
-      
-      var schedule = Schedule.query(function() {
-	
-
-	for(var i = 0; i < schedule.length; i++)
-	  {
-	    switch(schedule[i].day) {
-	    
-	      case 'M': {
-		$scope.classes[i] = {title: schedule[i].title, start: '2014-08-25T'+schedule[i].start, end: '2014-08-25T'+schedule[i].end};
-		break;
-	      }
-	      case 'T': {
-		$scope.classes[i] = {title: schedule[i].title, start: '2014-08-26T'+schedule[i].start, end: '2014-08-26T'+schedule[i].end};
-		break;
-	      }
-	      case 'W': {
-		$scope.classes[i] = {title: schedule[i].title, start: '2014-08-27T'+schedule[i].start, end: '2014-08-27T'+schedule[i].end};
-		break;
-	      }
-	      case 'R': {
-		$scope.classes[i] = {title: schedule[i].title, start: '2014-08-28T'+schedule[i].start, end: '2014-08-28T'+schedule[i].end};
-		break;
-	      }
-	      case 'F': {
-		$scope.classes[i] = {title: schedule[i].title, start: '2014-08-29T'+schedule[i].start, end: '2014-08-29T'+schedule[i].end};
-		break;
-	      }
-	    }
+	  else if (semester === 'Spring 2015') {
+	    date = new Date(2015,0,26,0,0,0);
+	    $scope.myCalendar.fullCalendar('gotoDate',date);
+	    //$scope.updateEvents($scope.eventSources,$scope.classes);
 	  }
 	  
-
-	
-	var canAdd = 0;
-	angular.forEach(sources,function(value, key){
-	  if(sources[key] === source){
-	    sources.splice(key,1);
-	    canAdd = 1;
-	  }
+	  //var date = new Date(2014,7,25,0,0,0);
+	  
+	  //$scope.myCalendar.fullCalendar('gotoDate',date);
+	  
 	});
-	
-	if(canAdd === 0){
-	  sources.push(source);
-	}
-	
-	var date = new Date(2014,7,25,0,0,0);
-	
-	//console.log(uiCalendarConfig['myCalendar']);
-	$scope.myCalendar.fullCalendar('gotoDate',date);
-	$scope.myCalendar.fullCalendar('defaultView','agendaDay');
-	
-      });
-	
+      }
+      else {
+	$window.alert('Please select semester!');
+      }
       
     };
     
@@ -145,8 +149,8 @@ angular.module('courseWizUiApp')
 	minTime: '08:00:00',
 	editable: false,
 	header:{
-	  //left: 'month basicWeek basicDay agendaWeek agendaDay',
-	  //center: 'title'
+	  left: 'month agendaWeek',
+	  center: 'title'
 	  //right: 'today prev,next'
 	}
       }

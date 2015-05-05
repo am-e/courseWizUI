@@ -96,3 +96,28 @@ body {
   width: 300px;
   
 }
+
+.student-info {
+  list-style-type: none;
+  width: 500px;
+}
+
+.student-info li {
+  padding: 1%;
+}
+
+.student-info label{
+  
+  width: 80px;
+}
+
+.student-courses {
+  list-style-type: none;
+}
+
+.student-courses li {
+  width: 100px;
+  border-bottom: solid;
+  border-bottom-width: 0.5px;
+}
+

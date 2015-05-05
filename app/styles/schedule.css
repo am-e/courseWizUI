@@ -1,4 +1,10 @@
 .calendar {
-  margin: 1%;
+  margin: 2%;
+  padding: 1%;
   width: 1000px;
+}
+
+#scheduleCoursesBtn {
+
+  margin-bottom: 2%;
 }

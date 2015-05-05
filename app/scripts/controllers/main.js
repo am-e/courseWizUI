@@ -23,11 +23,7 @@ angular.module('courseWizUiApp')
   // Login Controller
   .controller('LoginController', function ($scope, $rootScope, AUTH_EVENTS, AuthService, $resource) {
     
-    //Student info
-    $scope.studentRin = null;
-    $scope.studentName = null;
-    $scope.studentMajor = null;
-    $scope.sessionId = null;
+    
     
     $scope.credentials = {
       username: '',
@@ -47,9 +43,12 @@ angular.module('courseWizUiApp')
 	
 	var student = Student.get(function() {
 	  
-	  $scope.studentRin = student.rin;
-	  $scope.studentMajor = student.degree;
-	  $scope.studentName = student.name;
+	  //$scope.studentRin = student.rin;
+	  $scope.setStudentRin(student.rin);
+	  $scope.setStudentMajor(student.degree);
+	  $scope.setStudentName(student.name);
+	  $scope.setStudentCourses(student.required);
+	  
 	  
 	});
       
@@ -80,8 +79,7 @@ angular.module('courseWizUiApp')
       
       return $http
 	.post('http://127.0.0.1:8000/api/login/', credentials)
-	.then(function (res) {
-	  console.log(res);
+	.then(function () {
 	  Session.create(credentials.username);
 	  return credentials.username;
 	});
