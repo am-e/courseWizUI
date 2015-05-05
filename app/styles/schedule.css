@@ -2,3 +2,9 @@
   margin: 1%;
   width: 1000px;
 }
+
+.loading {
+    width: 1000px;
+    height: 200px;
+    background: url('../images/loading_small.gif') no-repeat scroll 50% 0% transparent;
+}
