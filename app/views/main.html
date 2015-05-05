@@ -13,9 +13,24 @@
       </form>
     </modal>
     <div ng-show="currentUser">
-      <p>Name: 	{{studentName}}</p>
-      <p>Rin: 	{{studentRin}}</p>
-      <p>Major: {{studentMajor}}</p>
+      <p><b>Name: 	{{studentName}}</b></p>
+      <p><b>Rin: 	{{studentRin}}</b></p>
+      <p><b>Major: {{studentMajor}}</b></p>
+      <p><b>Credits Taken: {{ calculateCredits() }}</b></p>
+      <p><b>GPA: {{ calculateGPA() }}</b></p>
+      <div ng-repeat="course in required">
+          <h4>Requirement: {{ course.name }}</h4>
+          <div ng-if="requirementSatisified(course)">
+              <p>Satified by {{ scores[course].crn }}</p>
+              <p>Grade: {{ scores[course].letter_grade }}
+          </div>
+          <div ng-if="!requirementSatisified(course)">
+              <p>Take one of: </p>
+              <ul>
+                  <li ng-repeat="c in course.options">{{ c }}</li>
+              </ul>
+          </div>
+      </div>
       <a ng-href="#/schedule">Schedule</a>
     </div>
 </div>
